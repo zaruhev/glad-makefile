@@ -38,14 +38,12 @@ sudo make uninstall
 ```
 
 ### Parameters
-```
-| Variable               | Description                               | Default                    |
-| ---------------------- | ----------------------------------------- | -------------------------- |
-| PKG_CONFIG_LIBINFO_DIR | Specifies the output directory of glad.pc | `/usr/local/lib/pkgconfig` |
-| STATIC_ARCHIVE_NAME    | Name of the static library.               | `libglad.a`                |
-| PREFIX                 | Location prefix of glad installation.     | `/usr/local`               |
-| BUILD_DIR              | Path to build directory.                  | `./build`                  |
-```
+| Variable                  | Description                               | Default                    |
+| ------------------------- | ----------------------------------------- | -------------------------- |
+| PKG\_CONFIG\_LIBINFO\_DIR | Specifies the output directory of glad.pc | `/usr/local/lib/pkgconfig` |
+| STATIC\_ARCHIVE\_NAME     | Name of the static library.               | `libglad.a`                |
+| PREFIX                    | Location prefix of glad installation.     | `/usr/local`               |
+| BUILD\_DIR                | Path to build directory.                  | `./build`                  |
 
 ## Contributing
 This installation script is still in its "it works on my system" phase, so any and all contributions are welcome.
