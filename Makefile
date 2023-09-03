@@ -30,7 +30,7 @@ Name: $(LIB_NAME)
 Description: Vulkan/GL/GLES/EGL/GLX/WGL Loader-Generator based on the official specifications for multiple languages.
 Version: $(MAJOR_VERSION).$(MINOR_VERSION)
 Cflags: -I$${includedir}
-Libs: -L$${libdir}
+Libs: -L$${libdir} -l$(LIB_NAME)
 endef
 
 LIBINFO_FILENAME = $(LIB_NAME).pc
