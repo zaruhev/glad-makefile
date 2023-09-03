@@ -37,8 +37,22 @@ To uninstall GLAD from pkgconfig, call `sudo make uninstall` from within the bui
 sudo make uninstall
 ```
 
+### Parameters
+```
+| Variable               | Description                               | Default                    |
+| ---------------------- | ----------------------------------------- | -------------------------- |
+| PKG_CONFIG_LIBINFO_DIR | Specifies the output directory of glad.pc | `/usr/local/lib/pkgconfig` |
+| STATIC_ARCHIVE_NAME    | Name of the static library.               | `libglad.a`                |
+| PREFIX                 | Location prefix of glad installation.     | `/usr/local`               |
+| BUILD_DIR              | Path to build directory.                  | `./build`                  |
+```
+
 ## Contributing
 This installation script is still in its "it works on my system" phase, so any and all contributions are welcome.
 
 TODOs are written sporadically in Makefile.
+
+### TODOs
+
+- [ ] Support for all GLAD APIs (only OpenGL is supported)
 

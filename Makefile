@@ -20,7 +20,7 @@ MINOR_VERSION = 0
 # If a more intuitive solution exists please PR.
 LIB_INCLUDES = $(addprefix $(PREFIX)/include/, $(shell ls include))
 
-define PKG_CONFIG
+define PKG_CONFIG_SRC
 prefix=$(PREFIX)
 exec_prefix=$${prefix}
 includedir=$(PREFIX)/include
@@ -35,7 +35,7 @@ endef
 
 LIBINFO_FILENAME = $(LIB_NAME).pc
 
-define MAKE_INSTALL
+define MAKE_INSTALL_SRC
 .PHONY: install uninstall
 install:
 	@printf 'Installing library files to $(PREFIX)...\n'
@@ -43,6 +43,7 @@ install:
 		cp ./$(STATIC_ARCHIVE_NAME) $(PREFIX)/lib;\
 		cp ./$(LIBINFO_FILENAME) $(PKG_CONFIG_LIBINFO_DIR)
 	@printf 'Installation complete.\n'
+	@printf 'To uninstall $(LIB_NAME), run `sudo make uninstall`.\n'
 uninstall:
 	@printf 'Uninstalling library files from $(PREFIX)...\n'
 	@rm -rf $(LIB_INCLUDES)\
@@ -53,25 +54,53 @@ endef
 
 # NOTE: Possible antipattern; relative include directory is copied into ./build although a manual include directory is defined at the top of the file.
 
-default: $(BUILD_DIR)
-	@printf '$(LIB_INCLUDES)\n'
-	@printf 'Compiling glad.c...\n'
-	@$(CC) -c -o $(BUILD_DIR)/glad.o $(SOURCE_DIR)/glad.c \
-		$(addprefix -I, $(INCLUDES))
-	@printf 'Archiving glad.o...\n'
-	@cd $(BUILD_DIR);\
-		ar rcs $(STATIC_ARCHIVE_NAME) glad.o;\
-		rm ./glad.o;\
-		cp -r ../include .;
-	@printf '$(STATIC_ARCHIVE_NAME) created.\n'
-	$(file > $(BUILD_DIR)/$(LIBINFO_FILENAME),$(PKG_CONFIG))
-	@printf '$(BUILD_DIR)/$(LIBINFO_FILENAME) created.\n'
-	$(file > $(BUILD_DIR)/Makefile,$(MAKE_INSTALL))
-	@printf '$(BUILD_DIR)/Makefile generated.\n'
-	@printf 'Run `sudo make install` in $(BUILD_DIR) to install $(LIB_NAME).\n'
+SRCS = $(wildcard src/*.c)
+_OBJS = $(subst src/,$(BUILD_DIR)/,$(SRCS))
+OBJS = $(_OBJS:.c=.o)
+
+LIB_OUT = $(BUILD_DIR)/$(STATIC_ARCHIVE_NAME)
+PKG_CONFIG_FILE = $(BUILD_DIR)/$(LIBINFO_FILENAME)
+INSTALL_MAKEFILE = $(BUILD_DIR)/Makefile
+GENERATED_INCLUDES = $(BUILD_DIR)/include
+
+default: $(LIB_OUT) $(PKG_CONFIG_FILE) $(INSTALL_MAKEFILE) $(GENERATED_INCLUDES)
+	@printf 'Library files generated.\n'
+	@printf 'Run `sudo make install` in $(BUILD_DIR) to install $(LIB_NAME)\n'
+
+$(PKG_CONFIG_FILE):
+	$(file > $@,$(PKG_CONFIG_SRC))
+
+$(INSTALL_MAKEFILE):
+	$(file > $@,$(MAKE_INSTALL_SRC))
+
+$(GENERATED_INCLUDES):
+	@cp -r $(INCLUDES) $(BUILD_DIR)
+
+$(LIB_OUT): $(BUILD_DIR) $(OBJS)
+	@printf 'Building library archive...\n'
+	@ar rvcs $(LIB_OUT) $(OBJS)
+	@printf 'Archive written to $(LIB_OUT)\n'
 
 $(BUILD_DIR):
-	@mkdir $(BUILD_DIR)
+	mkdir $(BUILD_DIR)
+
+$(OBJS): $(SRCS)
+	@printf '$< → $@... '
+	@$(CC) -c -o $@ $(addprefix -I,$(INCLUDES)) $<
+	@printf '✓\n'
+
+#$(LIB_OUT): $(BUILD_DIR) $(OBJS):
+#	@printf 'Building library archive...\n'
+#	@ar rvcs $(LIB_OUT) $(OBJS)
+#	@printf 'Archive written to $(LIB_OUT)\n'
+
+#$(OBJS): $(SRCS)
+#	@printf '$< → $@... '
+#	@$(CC) -c -o $@ $<
+#	@printf '✓\n'
+
+#$(BUILD_DIR):
+#	@mkdir $(BUILD_DIR)
 
 .PHONY = clean
 clean:
