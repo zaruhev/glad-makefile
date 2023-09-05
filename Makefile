@@ -63,9 +63,13 @@ PKG_CONFIG_FILE = $(BUILD_DIR)/$(LIBINFO_FILENAME)
 INSTALL_MAKEFILE = $(BUILD_DIR)/Makefile
 GENERATED_INCLUDES = $(BUILD_DIR)/include
 
-default: $(LIB_OUT) $(PKG_CONFIG_FILE) $(INSTALL_MAKEFILE) $(GENERATED_INCLUDES)
+default: $(PKG_CONFIG_LIBINFO_DIR) $(LIB_OUT) $(PKG_CONFIG_FILE) $(INSTALL_MAKEFILE) $(GENERATED_INCLUDES)
 	@printf 'Library files generated.\n'
 	@printf 'Run `sudo make install` in $(BUILD_DIR) to install $(LIB_NAME)\n'
+
+$(PKG_CONFIG_LIBINFO_DIR):
+	$(error PKG_CONFIG_LIBINFO_DIR ($(PKG_CONFIG_LIBINFO_DIR))\
+		is not a directory)
 
 $(PKG_CONFIG_FILE):
 	$(file > $@,$(PKG_CONFIG_SRC))
