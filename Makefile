@@ -42,7 +42,7 @@ install:
 	@cp -r ./include/* $(PREFIX)/include;\
 		cp ./$(STATIC_ARCHIVE_NAME) $(PREFIX)/lib;\
 		cp ./$(LIBINFO_FILENAME) $(PKG_CONFIG_LIBINFO_DIR)
-	@printf 'Installation complete.\n'
+	@printf 'Installation complete. Verify with `pkg-config --cflags --libs $(LIB_NAME)`.\n'
 	@printf 'To uninstall $(LIB_NAME), run `sudo make uninstall`.\n'
 uninstall:
 	@printf 'Uninstalling library files from $(PREFIX)...\n'
