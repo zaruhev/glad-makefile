@@ -64,4 +64,5 @@ TODOs are written sporadically in Makefile.
 ### TODOs
 
 - [ ] Support for all GLAD APIs (only OpenGL is supported)
+- [ ] Shared library generation/installation.
 
