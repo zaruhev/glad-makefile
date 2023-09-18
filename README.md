@@ -1,6 +1,17 @@
 # GLAD Makefile script
 A Makefile compilation/installation script for version 2.0 of [Dav1dde's GLAD library](https://github.com/Dav1dde/glad).
 
+## Downloading GLAD
+Before you can actually use this, you need to download GLAD. If you are using GLAD for OpenGL, you need to figure out what version of OpenGL your system supports.
+
+This can be done via `glxinfo`:
+```sh
+$ glxinfo | grep "OpenGL core profile version string"
+```
+Then you can choose the download media for GLAD on the [official website](https://gen.glad.sh/).
+
+You can also generate GLAD bindings [from the GitHub repository](https://github.com/Dav1dde/glad).
+
 ## Usage
 To install GLAD using the Makefile, call `make` from the root directory of your GLAD folder:
 ```sh
