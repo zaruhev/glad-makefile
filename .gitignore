@@ -1,0 +1,9 @@
+# Typically downloaded from GLAD website
+glad.zip
+
+# Unzipped GLAD files
+include/
+src/
+
+# The build
+build/

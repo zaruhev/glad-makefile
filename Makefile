@@ -88,7 +88,8 @@ $(LIB_OUT): $(BUILD_DIR) $(OBJS)
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
 
-$(OBJS): $(SRCS)
+# TODO: Read up on static pattern rules https://www.gnu.org/software/make/manual/make.html#Static-Pattern
+$(OBJS): build/%.o : src/%.c | $(BUILD_DIR)
 	@printf '$< → $@... '
 	@$(CC) -c -o $@ $(addprefix -I,$(INCLUDES)) $<
 	@printf '✓\n'
